@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-role-fab_manager
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: "install-{{ ansible_os_family }}.yml"
+
+- name: Create log directory
+  file:
+    path: "{{ fab_manager_log_dir }}"
+    mode: 0755
+    owner: "{{ fab_manager_user }}"
+    group: "{{ fab_manager_group }}"
+    state: directory
+  notify: Restart fab_manager
+
+- name: Create db directory
+  file:
+    path: "{{ fab_manager_db_dir }}"
+    mode: 0755
+    owner: "{{ fab_manager_user }}"
+    group: "{{ fab_manager_group }}"
+    state: directory
+  notify: Restart fab_manager
+
+- name: Create fab_manager.conf
+  template:
+    src: fab_manager.conf.j2
+    dest: "{{ fab_manager_conf_file }}"
+    validate: echo %s
+  notify: Restart fab_manager
+
+- name: Start fab_manager
+  service:
+    name: "{{ fab_manager_service }}"
+    enabled: true
+    state: started

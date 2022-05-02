@@ -1,0 +1,6 @@
+---
+
+- name: Restart fab_manager
+  service:
+    name: fab_manager
+    state: restarted

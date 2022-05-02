@@ -1,0 +1,9 @@
+---
+fab_manager_user: fab_manager
+fab_manager_group: fab_manager
+fab_manager_log_dir: /var/log/fab_manager
+fab_manager_db_dir: "{{ __fab_manager_db_dir }}"
+fab_manager_service: fab_manager
+fab_manager_conf_dir: "{{ __fab_manager_conf_dir }}"
+fab_manager_conf_file: "{{ __fab_manager_conf_dir }}/fab_manager.conf"
+fab_manager_flags: ""

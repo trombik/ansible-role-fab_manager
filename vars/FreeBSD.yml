@@ -1,0 +1,3 @@
+---
+__fab_manager_db_dir: /var/db/fab_manager
+__fab_manager_conf_dir: /usr/local/etc/fab_manager

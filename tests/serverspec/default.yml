@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  roles:
+    - ansible-role-fab_manager
+  vars:
+    fab_manager_config: ""
