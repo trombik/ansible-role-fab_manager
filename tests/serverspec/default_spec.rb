@@ -1,28 +1,44 @@
 require "spec_helper"
 require "serverspec"
 
-package = "fab_manager"
-service = "fab_manager"
-config  = "/etc/fab_manager/fab_manager.conf"
-user    = "fab_manager"
-group   = "fab_manager"
-ports   = [PORTS]
-log_dir = "/var/log/fab_manager"
-db_dir  = "/var/lib/fab_manager"
+user    = "fab"
+group   = "fab"
+home_dir = "/usr/local/#{user}"
+repo_dir = "#{home_dir}/fab_manager"
+env_file  = "#{repo_dir}/.env"
+ports   = []
+log_dir = "#{repo_dir}/log"
 
 case os[:family]
 when "freebsd"
-  config = "/usr/local/etc/fab_manager.conf"
-  db_dir = "/var/db/fab_manager"
 end
 
-describe package(package) do
-  it { should be_installed }
+describe user(user) do
+  it { should exist }
+  it { should belong_to_primary_group group }
+  it { should have_home_directory home_dir }
 end
 
-describe file(config) do
+describe file(repo_dir) do
+  it { should be_directory }
+  it { should be_owned_by user }
+  it { should be_grouped_into group }
+  it { should be_mode 755 }
+end
+
+describe file(log_dir) do
+  it { should be_directory }
+  it { should be_owned_by user }
+  it { should be_grouped_into group }
+  it { should be_mode 755 }
+end
+
+describe file(env_file) do
   it { should be_file }
-  its(:content) { should match Regexp.escape("fab_manager") }
+  it { should be_owned_by user }
+  it { should be_grouped_into group }
+  it { should be_mode 640 }
+  its(:content) { should match Regexp.escape("Managed by ansible") }
 end
 
 describe file(log_dir) do
@@ -32,23 +48,8 @@ describe file(log_dir) do
   it { should be_grouped_into group }
 end
 
-describe file(db_dir) do
-  it { should exist }
-  it { should be_mode 755 }
-  it { should be_owned_by user }
-  it { should be_grouped_into group }
-end
-
 case os[:family]
 when "freebsd"
-  describe file("/etc/rc.conf.d/fab_manager") do
-    it { should be_file }
-  end
-end
-
-describe service(service) do
-  it { should be_running }
-  it { should be_enabled }
 end
 
 ports.each do |p|

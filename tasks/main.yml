@@ -1,37 +1,36 @@
 ---
-# tasks file for ansible-role-fab_manager
+- name: "Include {{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}.yml"
 
-- include_vars: "{{ ansible_os_family }}.yml"
+- name: "Include install-{{ ansible_os_family }}.yml"
+  include: "install-{{ ansible_os_family }}.yml"
 
-- include: "install-{{ ansible_os_family }}.yml"
+- name: Create fab_manager_group
+  group:
+    name: "{{ fab_manager_group }}"
 
-- name: Create log directory
-  file:
-    path: "{{ fab_manager_log_dir }}"
-    mode: 0755
-    owner: "{{ fab_manager_user }}"
+- name: Create fab_manager_user
+  user:
+    name: "{{ fab_manager_user }}"
     group: "{{ fab_manager_group }}"
-    state: directory
-  notify: Restart fab_manager
+    home: "{{ fab_manager_home }}"
 
-- name: Create db directory
-  file:
-    path: "{{ fab_manager_db_dir }}"
-    mode: 0755
-    owner: "{{ fab_manager_user }}"
-    group: "{{ fab_manager_group }}"
-    state: directory
-  notify: Restart fab_manager
+- name: Install fab_manager via git
+  git:
+    accept_hostkey: yes
+    clone: yes
+    depth: 1
+    dest: "{{ fab_manager_repo_dir }}"
+    repo: "{{ fab_manager_repo_url }}"
+    version: "{{ fab_manager_repo_version }}"
+  become: yes
+  become_user: "{{ fab_manager_user }}"
 
-- name: Create fab_manager.conf
+- name: Create .env file
   template:
-    src: fab_manager.conf.j2
-    dest: "{{ fab_manager_conf_file }}"
-    validate: echo %s
-  notify: Restart fab_manager
-
-- name: Start fab_manager
-  service:
-    name: "{{ fab_manager_service }}"
-    enabled: true
-    state: started
+    src: env.j2
+    dest: "{{ fab_manager_repo_dir }}/.env"
+    validate: sh -n %s
+    owner: "{{ fab_manager_user }}"
+    group: "{{ fab_manager_group }}"
+    mode: "0640"

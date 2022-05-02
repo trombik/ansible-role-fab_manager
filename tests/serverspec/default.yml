@@ -1,6 +1,66 @@
 ---
 - hosts: localhost
   roles:
+    - trombik.git
     - ansible-role-fab_manager
   vars:
     fab_manager_config: ""
+    fab_manager_env: |
+      # see:
+      # https://github.com/sleede/fab-manager/blob/master/doc/environment.md
+      POSTGRES_HOST=127.0.0.1
+      POSTGRES_PASSWORD=
+      REDIS_HOST=fabmanager-redis
+      ELASTICSEARCH_HOST=127.0.0.1
+
+      SECRET_KEY_BASE=83daf5e7b80d990f037407bab78dff9904aaf3c195a50f84fa8695a22287e707dfbd9524b403b1dcf116ae1d8c06844c3d7ed942564e5b46be6ae3ead93a9d30
+
+      STRIPE_API_KEY=
+      STRIPE_PUBLISHABLE_KEY=
+
+      OAUTH_CLIENT_ID=github-oauth-app-id
+      OAUTH_CLIENT_SECRET=github-oauth-app-secret
+
+      DEFAULT_HOST=localhost:5000
+      DEFAULT_PROTOCOL=http
+
+      DELIVERY_METHOD=smtp
+      SMTP_ADDRESS=127.0.0.1
+      SMTP_PORT=1025
+      SMTP_USER_NAME=
+      SMTP_PASSWORD=
+      SMTP_AUTHENTICATION=plain
+      SMTP_ENABLE_STARTTLS_AUTO=true
+      SMTP_OPENSSL_VERIFY_MODE=
+      SMTP_TLS=false
+
+      RAILS_LOCALE=en
+      APP_LOCALE=en
+      MOMENT_LOCALE=en
+      SUMMERNOTE_LOCALE=en-US
+      ANGULAR_LOCALE=en
+      FULLCALENDAR_LOCALE=en
+      INTL_LOCALE=en-US
+      INTL_CURRENCY=USD
+      FORCE_VERSION_CHECK=false
+      ALLOW_INSECURE_HTTP=false
+
+      POSTGRESQL_LANGUAGE_ANALYZER=french
+
+      TIME_ZONE=Asia/Bangkok
+      D3_DATE_FORMAT=%Y/%m/%d
+      UIB_DATE_FORMAT=yyyy/MM/dd
+      EXCEL_DATE_FORMAT=dd/mm/yyyy
+
+      OPENLAB_BASE_URI=https://openprojects.fab-manager.com
+      OPENLAB_SSL_VERIFY=true
+
+      ADMINSYS_EMAIL=admin@example.org
+      LOG_LEVEL=debug
+      DISK_SPACE_MB_ALERT=100
+      # 5242880 = 5 megabytes
+      MAX_IMPORT_SIZE=5242880
+      # 10485760 = 10 megabytes
+      MAX_IMAGE_SIZE=10485760
+      # 20971520 = 20 megabytes
+      MAX_CAO_SIZE=20971520

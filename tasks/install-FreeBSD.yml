@@ -1,6 +1,2 @@
 ---
 
-- name: Install fab_manager
-  pkgng:
-    name: fab_manager
-    state: present
