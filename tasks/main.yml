@@ -23,10 +23,11 @@
     dest: "{{ fab_manager_repo_dir }}"
     repo: "{{ fab_manager_repo_url }}"
     version: "{{ fab_manager_repo_version }}"
+    update: no
   become: yes
   become_user: "{{ fab_manager_user }}"
 
-- name: Create .env file
+- name: Create .env file for development environment
   template:
     src: env.j2
     dest: "{{ fab_manager_repo_dir }}/.env"
@@ -34,3 +35,95 @@
     owner: "{{ fab_manager_user }}"
     group: "{{ fab_manager_group }}"
     mode: "0640"
+
+- name: Create env file for production environment
+  template:
+    src: env.j2
+    dest: "{{ fab_manager_config_dir }}/env"
+    validate: sh -n %s
+    owner: "{{ fab_manager_user }}"
+    group: "{{ fab_manager_group }}"
+    mode: "0640"
+
+- name: Create config/database.yml
+  ansible.builtin.template:
+    src: database.yml.j2
+    dest: "{{ fab_manager_config_dir }}/database.yml"
+    owner: "{{ fab_manager_user }}"
+    group: "{{ fab_manager_group }}"
+    mode: "0640"
+
+- name: Install gems via bundler
+  community.general.bundler:
+    chdir: "{{ fab_manager_repo_dir }}"
+    deployment_mode: yes
+    state: present
+
+- name: Install node modules via yarn
+  # XXX community.general.yarn does not support --frozen-lockfile
+  # https://github.com/ansible-collections/community.general/issues/3109
+  # XXX community.general.yarn always return "changed=true" when no name is
+  # given
+  # https://github.com/ansible-collections/community.general/blob/4309dfda520c67601ea76c4ad86b4b9023b7145b/plugins/modules/packaging/language/yarn.py#L363-L365
+  ansible.builtin.command: "yarn install --frozen-lockfile"
+  args:
+    chdir: "{{ fab_manager_repo_dir }}"
+    creates: "{{ fab_manager_repo_dir }}/node_modules"
+  become: yes
+  become_user: "{{ fab_manager_user }}"
+
+- name: Enable fab_manager_db_extensions in PostgreSQL
+  community.postgresql.postgresql_ext:
+    # XXX all the extensions in fab_manager_db_extensions must be marked as
+    # `trusted`, i.e. `trusted = true` in their control files.
+    # see extension/unaccent.control for example. this is available only for
+    # PostgreSQL 13 and later.
+    #
+    # XXX the login user must be `fab_manager_db_user` as a migration script
+    # includes `ALTER EXTENSION pg_trgm UPDATE`, which requires the user to be
+    # the owner of the extension
+    #
+    # XXX possibly, this should be implemented in trombik.postgresql
+    db: "{{ fab_manager_db_name }}"
+    name: "{{ item }}"
+    login_user: "{{ fab_manager_db_user }}"
+    login_password: "{{ fab_manager_db_password }}"
+    login_host: "{{ fab_manager_db_host }}"
+    port: "{{ fab_manager_db_port }}"
+  with_items: "{{ fab_manager_db_extensions }}"
+
+- name: Run rails db:create
+  ansible.builtin.shell: "bundle exec rails db:create && touch {{ fab_manager_repo_dir }}/.rails_db_create"
+  args:
+    chdir: "{{ fab_manager_repo_dir }}"
+    creates: "{{ fab_manager_repo_dir }}/.rails_db_create"
+  become: yes
+  become_user: "{{ fab_manager_user }}"
+
+
+- name: Run rails db:migrate
+  ansible.builtin.shell: "bundle exec rails db:migrate && touch {{ fab_manager_repo_dir }}/.rails_db_migrate"
+  args:
+    chdir: "{{ fab_manager_repo_dir }}"
+    creates: "{{ fab_manager_repo_dir }}/.rails_db_migrate"
+  become: yes
+  become_user: "{{ fab_manager_user }}"
+
+- name: Run rails db:seed
+  ansible.builtin.shell: "bundle exec rails db:seed && touch {{ fab_manager_repo_dir }}/.rails_db_seed"
+  args:
+    chdir: "{{ fab_manager_repo_dir }}"
+    creates: "{{ fab_manager_repo_dir }}/.rails_db_seed"
+  become: yes
+  become_user: "{{ fab_manager_user }}"
+  environment: "{{ fab_manager_env }}"
+
+- name: Create assets
+  # see https://raw.githubusercontent.com/sleede/fab-manager/master/setup/setup.sh
+  ansible.builtin.shell: "bundle exec rake assets:precompile"
+  args:
+    chdir: "{{ fab_manager_repo_dir }}"
+    creates: "{{ fab_manager_repo_dir }}/public/packs/manifest.json"
+  become: yes
+  become_user: "{{ fab_manager_user }}"
+  environment: "{{ fab_manager_env }}"

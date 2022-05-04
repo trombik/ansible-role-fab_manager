@@ -1,4 +1,12 @@
 ---
 
+collections:
+  - name: community.general
+
 roles:
   - name: trombik.git
+  - name: trombik.postgresql
+  - name: trombik.sysctl
+  - name: trombik.redis
+  - name: trombik.supervisor
+  - name: trombik.haproxy
