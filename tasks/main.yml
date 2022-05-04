@@ -120,8 +120,8 @@
 
 - name: Create assets
   # see https://raw.githubusercontent.com/sleede/fab-manager/master/setup/setup.sh
-  ansible.builtin.shell: "bundle exec rake assets:precompile"
-  args:
+  ansible.builtin.command:
+    cmd: "bundle exec rake assets:precompile"
     chdir: "{{ fab_manager_repo_dir }}"
     creates: "{{ fab_manager_repo_dir }}/public/packs/manifest.json"
   become: yes
