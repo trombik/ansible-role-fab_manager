@@ -114,6 +114,13 @@
       MAX_CAO_SIZE: 20971520
 
     # ___________________________________postgresql
+    # XXX update postgresql_major_version for Devuan 4 in trombik.postgresql
+    os_postgresql_major_version:
+      Debian: 13
+    postgresql_major_version: "{{ os_postgresql_major_version[ansible_os_family] | default(__postgresql_major_version) }}"
+    os_postgresql_package:
+      Debian: "postgresql-{{ postgresql_major_version }}"
+    postgresql_package: "{{ os_postgresql_package[ansible_os_family] | default(__postgresql_package) }}"
     postgresql_initial_password: password
     postgresql_debug: yes
     os_sysctl:
@@ -276,13 +283,13 @@
       user={{ fab_manager_user }}
       environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
       directory={{ fab_manager_repo_dir }}
-      command=/usr/local/bin/bundle exec rails s puma -p {{ fab_manager_http_port }} -b {{ fab_manager_http_address }}
+      command=bundle exec rails s puma -p {{ fab_manager_http_port }} -b {{ fab_manager_http_address }}
 
       [program:worker]
       user={{ fab_manager_user }}
       environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
       directory={{ fab_manager_repo_dir }}
-      command=/usr/local/bin/bundle exec sidekiq -C {{ fab_manager_repo_dir }}/config/sidekiq.yml
+      command=bundle exec sidekiq -C {{ fab_manager_repo_dir }}/config/sidekiq.yml
 
     # ___________________________________haproxy
     project_backend_port: 8000

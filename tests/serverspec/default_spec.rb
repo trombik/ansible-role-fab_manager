@@ -9,16 +9,18 @@ config_dir = "#{repo_dir}/config"
 env_file = "#{repo_dir}/.env"
 config_database = "#{config_dir}/database.yml"
 db_service = case os[:family]
-             when "freebsd"
+             when "freebsd", "devuan"
                "postgresql"
              end
 rproxy_service = case os[:family]
-                 when "freebsd"
+                 when "freebsd", "devuan"
                    "haproxy"
                  end
 supervisor_service = case os[:family]
                      when "freebsd"
                        "supervisord"
+                     when "devuan"
+                       "supervisor"
                      end
 supervisor_workers = %w[app worker]
 ports = [

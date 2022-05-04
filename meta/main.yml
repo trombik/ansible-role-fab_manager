@@ -10,5 +10,8 @@ galaxy_info:
     - name: FreeBSD
       versions:
         - 13.0
+    - name: Devuan
+      versions:
+        - chimaera
   galaxy_tags:
     - rails

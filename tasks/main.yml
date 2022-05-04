@@ -1,6 +1,17 @@
 ---
 - name: "Include {{ ansible_os_family }}.yml"
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        # XXX ansible version on OpenBSD 6.9 does not have
+        # ansible_distribution_major_version. defaults to
+        # ansible_distribution_version.
+        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(ansible_distribution_version) }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths:
+        - vars
 
 - name: "Include install-{{ ansible_os_family }}.yml"
   include: "install-{{ ansible_os_family }}.yml"
@@ -59,14 +70,24 @@
     deployment_mode: yes
     state: present
 
+- name: Create symlink to yarnpkg on Debian
+  ansible.builtin.file:
+    # XXX Debian does not install yarn as `yarn`
+    # see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=843021#65 for why
+    src: /usr/bin/yarnpkg
+    dest: /usr/bin/yarn
+    state: link
+  when:
+    - ansible_os_family == 'Debian'
+
 - name: Install node modules via yarn
   # XXX community.general.yarn does not support --frozen-lockfile
   # https://github.com/ansible-collections/community.general/issues/3109
   # XXX community.general.yarn always return "changed=true" when no name is
   # given
   # https://github.com/ansible-collections/community.general/blob/4309dfda520c67601ea76c4ad86b4b9023b7145b/plugins/modules/packaging/language/yarn.py#L363-L365
-  ansible.builtin.command: "yarn install --frozen-lockfile"
-  args:
+  ansible.builtin.command:
+    cmd: "yarn install --frozen-lockfile"
     chdir: "{{ fab_manager_repo_dir }}"
     creates: "{{ fab_manager_repo_dir }}/node_modules"
   become: yes
