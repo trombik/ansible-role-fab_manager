@@ -69,6 +69,8 @@
     chdir: "{{ fab_manager_repo_dir }}"
     deployment_mode: yes
     state: present
+  environment:
+    PATH: /usr/bin:/usr/pgsql-12/bin
 
 - name: Create symlink to yarnpkg on Debian
   ansible.builtin.file:
