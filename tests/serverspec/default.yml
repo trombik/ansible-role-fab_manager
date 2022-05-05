@@ -114,13 +114,6 @@
       MAX_CAO_SIZE: 20971520
 
     # ___________________________________postgresql
-    # XXX update postgresql_major_version for Devuan 4 in trombik.postgresql
-    os_postgresql_major_version:
-      Debian: 13
-    postgresql_major_version: "{{ os_postgresql_major_version[ansible_os_family] | default(__postgresql_major_version) }}"
-    os_postgresql_package:
-      Debian: "postgresql-{{ postgresql_major_version }}"
-    postgresql_package: "{{ os_postgresql_package[ansible_os_family] | default(__postgresql_package) }}"
     postgresql_initial_password: password
     postgresql_debug: yes
     os_sysctl:

@@ -7,8 +7,6 @@ collections:
 roles:
   - name: trombik.git
   - name: trombik.postgresql
-    src: https://github.com/trombik/ansible-role-postgresql
-    version: master
   - name: trombik.sysctl
   - name: trombik.redis
   - name: trombik.supervisor
