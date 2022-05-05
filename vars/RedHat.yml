@@ -1,0 +1,12 @@
+---
+__fab_manager_packages:
+  - "@ruby:2.7/default"
+  - ruby-devel
+  - gcc
+  - libpq-devel
+  - rubygem-bundler
+  - libpq-devel
+  - postgresql12
+  - ImageMagick
+  - nodejs
+  - yarnpkg
