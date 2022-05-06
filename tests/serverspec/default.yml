@@ -19,7 +19,6 @@
     project_redis_host: 127.0.0.1
     project_es_host: 127.0.0.1
 
-    fab_manager_repo_version: v5.3.13
     fab_manager_db_host: "{{ project_db_host }}"
     fab_manager_db_name: "{{ project_db_name }}"
     fab_manager_db_user: "{{ project_db_user }}"
@@ -116,6 +115,12 @@
     # ___________________________________postgresql
     postgresql_initial_password: password
     postgresql_debug: yes
+
+    # XXX use 13 for trusted extensions
+    os_postgresql_major_version:
+      Devuan: "{% if ansible_distribution_version | int >= 4 %}13{% else %}11{% endif %}"
+      Ubuntu: 12
+    postgresql_major_version: "{{ os_postgresql_major_version[ansible_distribution] | default(13) }}"
     os_sysctl:
       FreeBSD: {}
       OpenBSD:
@@ -133,7 +138,7 @@
       Debian:
         - postgresql-contrib
       RedHat:
-        - "postgresql{{ postgresql_major_version }}-contrib"
+        - postgresql-contrib
 
     postgresql_extra_packages: "{{ os_postgresql_extra_packages[ansible_os_family] }}"
     postgresql_pg_hba_config: |
