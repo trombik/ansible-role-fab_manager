@@ -4,8 +4,10 @@ fab_manager_group: fab
 fab_manager_home: /usr/local/fab
 fab_manager_repo_name: fab_manager
 fab_manager_repo_dir: "{{ fab_manager_home }}/{{ fab_manager_repo_name }}"
-fab_manager_repo_url: https://github.com/sleede/fab-manager.git
-fab_manager_repo_version: master
+# XXX my branch, `local`, has some fixes I found while installing fab_manager
+# on non-supported distributions.
+fab_manager_repo_url: https://github.com/trombik/fab-manager.git
+fab_manager_repo_version: local
 fab_manager_config_dir: "{{ fab_manager_repo_dir }}/config"
 fab_manager_log_dir: "{{ fab_manager_repo_dir }}/log"
 fab_manager_env: {}
