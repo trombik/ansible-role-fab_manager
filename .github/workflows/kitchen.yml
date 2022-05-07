@@ -109,6 +109,19 @@ jobs:
         run: |
           virtualbox -h
 
+      - name: Download and add box file
+        # XXX download box files from the latest release page because vagrant
+        # cloud has a rather strict rate limit.
+        #
+        # see
+        # https://github.com/trombik/ansible-vm-build
+        run: |
+          VAGRANT_CLOUD_USER="trombik"
+
+          # i.e. ansible-freebsd-13.0-amd64
+          BOX_NAME=$(bundle exec kitchen diag ${{ matrix.instance }} | ruby -e 'require "json"; require "yaml"; puts YAML.load(STDIN).to_json;' | jq '.instances[].driver.box | split("/")[1] ')
+          Vagrant box add --name ${VAGRANT_CLOUD_USER}/${BOX_NAME} https://github.com/trombik/ansible-vm-build/releases/latest/download/${BOX_NAME}.box
+
       - name: Run test-kitchen
         run: |
           bundle exec kitchen test ${{ matrix.instance }}
