@@ -279,15 +279,19 @@
 
       [program:app]
       user={{ fab_manager_user }}
-      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
+      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin",HOME={{ fab_manager_home }}
       directory={{ fab_manager_repo_dir }}
       command=bundle exec rails s puma -p {{ fab_manager_http_port }} -b {{ fab_manager_http_address }}
+      stderr_logfile={{ supervisor_log_dir }}/app.err.log
+      stdout_logfile={{ supervisor_log_dir }}/app.log
 
       [program:worker]
       user={{ fab_manager_user }}
-      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
+      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin",HOME={{ fab_manager_home }}
       directory={{ fab_manager_repo_dir }}
       command=bundle exec sidekiq -C {{ fab_manager_repo_dir }}/config/sidekiq.yml
+      stderr_logfile={{ supervisor_log_dir }}/worker.err.log
+      stdout_logfile={{ supervisor_log_dir }}/worker.log
 
     # ___________________________________haproxy
     project_backend_port: 8000

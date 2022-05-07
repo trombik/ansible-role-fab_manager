@@ -9,15 +9,15 @@ config_dir = "#{repo_dir}/config"
 env_file = "#{repo_dir}/.env"
 config_database = "#{config_dir}/database.yml"
 db_service = case os[:family]
-             when "freebsd", "devuan"
+             when "freebsd", "devuan", "fedora"
                "postgresql"
              end
 rproxy_service = case os[:family]
-                 when "freebsd", "devuan"
+                 when "freebsd", "devuan", "fedora"
                    "haproxy"
                  end
 supervisor_service = case os[:family]
-                     when "freebsd"
+                     when "freebsd", "fedora"
                        "supervisord"
                      when "devuan"
                        "supervisor"
@@ -130,13 +130,14 @@ ports.each do |p|
   end
 end
 
-describe command("curl -s http://127.0.0.1:5000") do
+# XXX wait a bit before testing app server
+describe command("sleep 5 && curl -s http://127.0.0.1:5000") do
   its(:exit_status) { should eq 0 }
   its(:stderr) { should eq "" }
   its(:stdout) { should match Regexp.escape("<title>Fab-manager</title>") }
 end
 
-describe command("curl -s http://127.0.0.1") do
+describe command("sleep 5 && curl -s http://127.0.0.1") do
   its(:exit_status) { should eq 0 }
   its(:stderr) { should eq "" }
   its(:stdout) { should match Regexp.escape("<title>Fab-manager</title>") }
