@@ -26,9 +26,32 @@ None
 
 # Role Variables
 
-| variable | description | default |
+| Variable | Description | Default |
 |----------|-------------|---------|
-
+| `fab_manager_user` | User name of `fab-manager` | `fab` |
+| `fab_manager_group` | Group name of `fab-manager` | `fab` |
+| `fab_manager_home` | Path to `$HOME` of `fab-manager` user | `/usr/local/fab` |
+| `fab_manager_repo_name` | Basename  of directory to checkout the source | `fab_manager` |
+| `fab_manager_repo_dir` | Path to directory to checkout the source | `{{ fab_manager_home }}/{{ fab_manager_repo_name }}` |
+| `fab_manager_repo_url` | `git` URL of the source | `https://github.com/trombik/fab-manager.git` |
+| `fab_manager_repo_version` | Branch name, tag, or commit to checkout the source | `local` |
+| `fab_manager_config_dir` | Path to `config` directory | `{{ fab_manager_repo_dir }}/config` |
+| `fab_manager_log_dir` | Path to `log` directory | `{{ fab_manager_repo_dir }}/log` |
+| `fab_manager_env` | A dict of `.env` file content | `{}` |
+| `fab_manager_config_database` | A dict of `database.yml` | `` |
+| `fab_manager_packages` | A list of required packages | `{{ __fab_manager_packages }}` |
+| `fab_manager_db_host` | Address of the database | `127.0.0.1` |
+| `fab_manager_db_port` | Port number of the database | `5432` |
+| `fab_manager_db_name` | Name of the database | `fab` |
+| `fab_manager_db_user` | User name of the database | `fab` |
+| `fab_manager_db_password` | Password of `fab_manager_db_name` | `` |
+| `fab_manager_db_extensions` | A list of `postgresql` extensions to enable | `["unaccent", "pg_trgm"]` |
+| `fab_manager_redis_host` | Address of `redis` server | `127.0.0.1` |
+| `fab_manager_es_host` | Port number of `redis` server | `127.0.0.1` |
+| `fab_manager_http_address` | Address for `fab-manager` to bind | `127.0.0.1` |
+| `fab_manager_http_port` | Port number for `fab-manager` to bind | `5000` |
+| `fab_manager_http_schema` | HTTP scheme of the protocol | `http` |
+| `fab_manager_extra_packages` | A list of extra packages to install | `[]` |
 
 # Dependencies
 
