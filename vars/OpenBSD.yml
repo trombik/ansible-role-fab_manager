@@ -1,0 +1,10 @@
+---
+__fab_manager_packages:
+  - ImageMagick
+  - node
+  - yarn
+  - pkgconf
+  - libxml
+  - gtar--
+  - xz
+  - ruby27-nokogiri  # XXX probably not needed anymore
