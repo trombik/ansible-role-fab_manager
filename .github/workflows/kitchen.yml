@@ -120,6 +120,7 @@ jobs:
         # https://github.com/trombik/ansible-vm-build
         run: |
           VAGRANT_CLOUD_USER="trombik"
+          LATEST_BOX_URL_BASE="https://github.com/trombik/ansible-vm-build/releases/latest/download"
 
           # i.e. ansible-freebsd-13.0-amd64
           BOX_NAME=$(bundle exec kitchen diag ${{ matrix.instance }} | ruby -e 'require "json"; require "yaml"; puts YAML.load(STDIN).to_json;' | jq '.instances[].driver.box | split("/")[1]' | sed -e 's/"//g')
@@ -127,8 +128,8 @@ jobs:
           # download box file from the repository if the box file is
           # available. if not, box is downloaded from vagrant cloud as a
           # fallback.
-          if curl --head --location --fail https://github.com/trombik/ansible-vm-build/releases/latest/download/ansible-devuan-3-amd64.box; then
-            Vagrant box add --name ${VAGRANT_CLOUD_USER}/${BOX_NAME} https://github.com/trombik/ansible-vm-build/releases/latest/download/${BOX_NAME}.box
+          if curl --head --location --fail "${LATEST_BOX_URL_BASE}/${BOX_NAME}.box"
+            Vagrant box add --name ${VAGRANT_CLOUD_USER}/${BOX_NAME} "${LATEST_BOX_URL_BASE}/${BOX_NAME}.box"
           fi
 
       - name: Run test-kitchen
