@@ -128,7 +128,7 @@ jobs:
           # download box file from the repository if the box file is
           # available. if not, box is downloaded from vagrant cloud as a
           # fallback.
-          if curl --head --location --fail "${LATEST_BOX_URL_BASE}/${BOX_NAME}.box"
+          if curl --head --location --fail "${LATEST_BOX_URL_BASE}/${BOX_NAME}.box"; then
             Vagrant box add --name ${VAGRANT_CLOUD_USER}/${BOX_NAME} "${LATEST_BOX_URL_BASE}/${BOX_NAME}.box"
           fi
 
