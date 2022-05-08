@@ -14,6 +14,8 @@ While the application runs fine on a host with 2 GB memory, `webpack` requires
 a lot of memory. Make sure the host has enough memory. Adjust `NODE_OPTIONS`
 environment variable with `--max-old-space-size` accordingly.
 
+The role does not support `elasticsearch`.
+
 # Requirements
 
 * `git`
@@ -45,7 +47,7 @@ See an example at [requirements.yml](requirements.yml).
 | `fab_manager_db_name` | Name of the database | `fab` |
 | `fab_manager_db_user` | User name of the database | `fab` |
 | `fab_manager_db_password` | Password of `fab_manager_db_name` | `` |
-| `fab_manager_db_extensions` | A list of `postgresql` extensions to enable | `["unaccent", "pg_trgm"]` |
+| `fab_manager_db_extensions` | A list of `postgresql` extensions to enable. The extensions must be `trusted`. | `["unaccent", "pg_trgm"]` |
 | `fab_manager_redis_host` | Address of `redis` server | `127.0.0.1` |
 | `fab_manager_es_host` | Port number of `redis` server | `127.0.0.1` |
 | `fab_manager_http_address` | Address for `fab-manager` to bind | `127.0.0.1` |
