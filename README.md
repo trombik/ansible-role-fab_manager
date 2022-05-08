@@ -7,22 +7,22 @@
 
 ## For all users
 
-The role does _NOT_ install:
+The role assume that the `postgresql` version is 13, in which trusted
+extension is supported.
+
+While the application runs fine on a host with 2 GB memory, `webpack` requires
+a lot of memory. Make sure the host has enough memory. Adjust `NODE_OPTIONS`
+environment variable with `--max-old-space-size` accordingly.
+
+# Requirements
 
 * `git`
 * `postgresql`
 * `redis`
 * `ruby`
-* `supervisor`
+* `supervisor`, or other application manager to run rails application
 
-_You_ should install them.
-
-The role assume that the `postgresql` version is 13, in which white-listed
-extensions are supported.
-
-# Requirements
-
-None
+See an example at [requirements.yml](requirements.yml).
 
 # Role Variables
 
@@ -53,9 +53,64 @@ None
 | `fab_manager_http_schema` | HTTP scheme of the protocol | `http` |
 | `fab_manager_extra_packages` | A list of extra packages to install | `[]` |
 
+## FreeBSD
+
+```yaml
+---
+__fab_manager_packages:
+- databases/postgresql13-client
+- graphics/ImageMagick6
+- www/node14
+- www/yarn-node14
+```
+
+## Devuan-4
+
+```yaml
+---
+__fab_manager_packages:
+- libpq-dev
+- postgresql-client-13
+- imagemagick
+- nodejs
+- yarnpkg
+```
+
+## RedHat
+
+```yaml
+---
+__fab_manager_packages:
+- ruby-devel
+- gcc
+- gcc-c++
+- libpq-devel
+- ImageMagick
+- nodejs
+- yarnpkg
+```
+
+## OpenBSD
+
+```yaml
+---
+__fab_manager_packages:
+- ImageMagick
+- node
+- yarn
+- pkgconf
+- libxml
+- gtar--
+- xz
+- ruby27-nokogiri
+```
+
 # Dependencies
 
-None
+## Collections
+
+* `community.general`
+* `community.postgresql`
 
 # Example Playbook
 
