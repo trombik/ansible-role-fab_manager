@@ -1,6 +1,5 @@
 ---
 __fab_manager_packages:
-  - sysutils/rubygem-bundler
   - databases/postgresql13-client
   - graphics/ImageMagick6
   - www/node14

@@ -1,11 +1,9 @@
 ---
 __fab_manager_packages:
-  - "@ruby:2.7/default"
   - ruby-devel
   - gcc
   - gcc-c++
   - libpq-devel
-  - rubygem-bundler
   - ImageMagick
   - nodejs
   - yarnpkg
