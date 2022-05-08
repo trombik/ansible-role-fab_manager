@@ -1,6 +1,5 @@
 ---
 __fab_manager_packages:
-  - bundler
   - libpq-dev
   - postgresql-client-13
   - imagemagick

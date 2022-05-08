@@ -2,8 +2,10 @@
 - hosts: localhost
   roles:
     - trombik.git
+    - trombik.sysctl
     - trombik.postgresql
     - trombik.redis
+    - trombik.language_ruby
     - ansible-role-fab_manager
     - trombik.supervisor
     - trombik.haproxy
@@ -17,8 +19,9 @@
     project_db_admin_user: admin
     project_db_admin_password: password
     project_redis_host: 127.0.0.1
-    project_es_host: 127.0.0.1
+    project_es_host: 127.0.0.1  # XXX unused
 
+    fab_manager_redis_host: "{{ project_redis_host }}"
     fab_manager_db_host: "{{ project_db_host }}"
     fab_manager_db_name: "{{ project_db_name }}"
     fab_manager_db_user: "{{ project_db_user }}"
@@ -231,7 +234,7 @@
     redis_config: |
       databases 17
       save 900 1
-      bind 127.0.0.1
+      bind {{ project_redis_host }}
       protected-mode no
       port {{ redis_port }}
       timeout 0

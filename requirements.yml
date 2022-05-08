@@ -12,3 +12,4 @@ roles:
   - name: trombik.redis
   - name: trombik.supervisor
   - name: trombik.haproxy
+  - name: trombik.language_ruby
