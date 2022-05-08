@@ -18,8 +18,6 @@ fab_manager_db_port: 5432
 fab_manager_db_name: fab
 fab_manager_db_user: fab
 fab_manager_db_password: ""
-fab_manager_db_admin_user: admin
-fab_manager_db_admin_password: ""
 fab_manager_db_extensions:
   - unaccent
   - pg_trgm
