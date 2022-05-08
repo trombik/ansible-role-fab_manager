@@ -37,6 +37,20 @@ platforms:
       extra_vars:
         ansible_python_interpreter: '/usr/local/bin/python3'
 
+# XXX on OpenBSD, `rake assets:precompile` fails with:
+# libc++abi: terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
+#
+#  - name: openbsd-7.0-amd64
+#    driver:
+#      box: trombik/ansible-openbsd-7.0-amd64
+#      box_check_update: false
+#    driver_config:
+#      ssh:
+#        shell: '/bin/sh'
+#    provisioner:
+#      extra_vars:
+#        ansible_python_interpreter: '/usr/local/bin/python3'
+
   - name: devuan-4-amd64
     driver:
       box: trombik/ansible-devuan-4-amd64

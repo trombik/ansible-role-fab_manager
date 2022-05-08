@@ -1,0 +1,11 @@
+---
+
+- name: Install fab_manager_packages
+  community.general.openbsd_pkg:
+    name: "{{ fab_manager_packages }}"
+    state: present
+
+- name: Install fab_manager_extra_packages
+  community.general.openbsd_pkg:
+    name: "{{ fab_manager_extra_packages }}"
+    state: present
