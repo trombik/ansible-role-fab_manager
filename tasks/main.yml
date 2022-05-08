@@ -14,20 +14,20 @@
         - vars
 
 - name: "Include install-{{ ansible_os_family }}.yml"
-  include: "install-{{ ansible_os_family }}.yml"
+  include_tasks: "install-{{ ansible_os_family }}.yml"
 
 - name: Create fab_manager_group
-  group:
+  ansible.builtin.group:
     name: "{{ fab_manager_group }}"
 
 - name: Create fab_manager_user
-  user:
+  ansible.builtin.user:
     name: "{{ fab_manager_user }}"
     group: "{{ fab_manager_group }}"
     home: "{{ fab_manager_home }}"
 
 - name: Install fab_manager via git
-  git:
+  ansible.builtin.git:
     accept_hostkey: yes
     clone: yes
     depth: 1
@@ -39,7 +39,7 @@
   become_user: "{{ fab_manager_user }}"
 
 - name: Create .env file for development environment
-  template:
+  ansible.builtin.template:
     src: env.j2
     dest: "{{ fab_manager_repo_dir }}/.env"
     validate: sh -n %s
@@ -48,7 +48,7 @@
     mode: "0640"
 
 - name: Create env file for production environment
-  template:
+  ansible.builtin.template:
     src: env.j2
     dest: "{{ fab_manager_config_dir }}/env"
     validate: sh -n %s
