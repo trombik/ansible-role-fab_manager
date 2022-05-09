@@ -21,7 +21,7 @@ jobs:
 
   lint:
     needs: pre_build
-    if: ${{ needs.pre_build.outputs.should_skip != 'true' || github.ref_name == 'main' || github.ref_name == 'master' }}
+    if: ${{ needs.pre_build.outputs.should_skip != 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,10 +46,7 @@ jobs:
     needs:
       - pre_build
       - lint
-    # always run CI in main (or master) branch so that cache in main can be
-    # reused in pull_request or push. this reduces the number of box download.
-    # vagrant cloud throttles requests after many download requests.
-    if: ${{ needs.pre_build.outputs.should_skip != 'true' || github.ref_name == 'main' || github.ref_name == 'master' }}
+    if: ${{ needs.pre_build.outputs.should_skip != 'true' }}
     runs-on: macos-10.15
     outputs:
       instances: ${{ steps.set-instances.outputs.instances }}
@@ -73,7 +70,7 @@ jobs:
     needs:
       - pre_build
       - list
-    if: ${{ needs.pre_build.outputs.should_skip != 'true' || github.ref_name == 'main' || github.ref_name == 'master' }}
+    if: ${{ needs.pre_build.outputs.should_skip != 'true' }}
     strategy:
       matrix:
         instance: ${{ fromJSON(needs.list.outputs.instances) }}
