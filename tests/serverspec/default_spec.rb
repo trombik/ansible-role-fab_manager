@@ -3,6 +3,7 @@ require "serverspec"
 
 user    = "fab"
 group   = "fab"
+extra_group = "ansible"
 home_dir = "/usr/local/#{user}"
 repo_dir = "#{home_dir}/fab_manager"
 config_dir = "#{repo_dir}/config"
@@ -35,6 +36,7 @@ describe user(user) do
   it { should exist }
   it { should belong_to_primary_group group }
   it { should have_home_directory home_dir }
+  it { should belong_to_group extra_group }
 end
 
 describe file(repo_dir) do

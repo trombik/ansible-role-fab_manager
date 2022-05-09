@@ -32,6 +32,7 @@ See an example at [requirements.yml](requirements.yml).
 |----------|-------------|---------|
 | `fab_manager_user` | User name of `fab-manager` | `fab` |
 | `fab_manager_group` | Group name of `fab-manager` | `fab` |
+| `fab_manager_groups` | List of groups `fab_manager_user` will be added to | `[]` |
 | `fab_manager_home` | Path to `$HOME` of `fab-manager` user | `/usr/local/fab` |
 | `fab_manager_repo_name` | Basename  of directory to checkout the source | `fab_manager` |
 | `fab_manager_repo_dir` | Path to directory to checkout the source | `{{ fab_manager_home }}/{{ fab_manager_repo_name }}` |

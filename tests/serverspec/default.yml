@@ -1,5 +1,9 @@
 ---
 - hosts: localhost
+  pre_tasks:
+    - name: Create ansible group
+      ansible.builtin.group:
+        name: ansible
   roles:
     - trombik.git
     - trombik.sysctl
@@ -28,6 +32,7 @@
     fab_manager_db_password: "{{ project_db_password }}"
     fab_manager_db_admin_user: "{{ project_db_admin_user }}"
     fab_manager_db_admin_password: "{{ project_db_admin_password }}"
+    fab_manager_groups: ansible
 
     fab_manager_config: ""
     fab_manager_config_database:

@@ -24,6 +24,7 @@
   ansible.builtin.user:
     name: "{{ fab_manager_user }}"
     group: "{{ fab_manager_group }}"
+    groups: "{{ fab_manager_groups }}"
     home: "{{ fab_manager_home }}"
 
 - name: Install fab_manager via git

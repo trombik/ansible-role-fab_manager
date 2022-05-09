@@ -1,6 +1,7 @@
 ---
 fab_manager_user: fab
 fab_manager_group: fab
+fab_manager_groups: []
 fab_manager_home: /usr/local/fab
 fab_manager_repo_name: fab_manager
 fab_manager_repo_dir: "{{ fab_manager_home }}/{{ fab_manager_repo_name }}"
