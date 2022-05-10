@@ -63,7 +63,9 @@ jobs:
       - name: Set instances for matrix build
         id: set-instances
         run: |
+          CACHE_EPOCH=1
           echo ::set-output name=instances::$(bundle exec kitchen list -j | jq --compact-output 'map(.instance)')
+          echo ::set-output name=cache-epoch::${CACHE_EPOCH}
 
   kitchen:
     runs-on: macos-10.15
@@ -95,9 +97,9 @@ jobs:
           # the file has other configuration options, such as log level, and
           # when you change options not related to vagrant boxes, cache
           # becomes invalid.
-          key: vagrant-boxes-${{ hashFiles('**/.kitchen.yml') }}-${{ matrix.instance }}
+          key: vagrant-boxes-${{ hashFiles('**/.kitchen.yml') }}-${{ needs.list.outputs.cache-epoch }}-${{ matrix.instance }}
           restore-keys: |
-            vagrant-boxes-${{ hashFiles('**/.kitchen.yml') }}-${{ matrix.instance }}
+            vagrant-boxes-${{ hashFiles('**/.kitchen.yml') }}-${{ needs.list.outputs.cache-epoch }}-${{ matrix.instance }}
 
       - name: Show vagrant version
         run: |
