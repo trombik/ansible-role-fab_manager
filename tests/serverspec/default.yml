@@ -20,7 +20,10 @@
     project_db_admin_password: password
     project_redis_host: 127.0.0.1
     project_es_host: 127.0.0.1  # XXX unused
+    project_rails_env: production
 
+    fab_manager_groups:
+      - ansible
     fab_manager_redis_host: "{{ project_redis_host }}"
     fab_manager_db_host: "{{ project_db_host }}"
     fab_manager_db_name: "{{ project_db_name }}"
@@ -28,7 +31,6 @@
     fab_manager_db_password: "{{ project_db_password }}"
     fab_manager_db_admin_user: "{{ project_db_admin_user }}"
     fab_manager_db_admin_password: "{{ project_db_admin_password }}"
-    fab_manager_groups: ansible
 
     fab_manager_config: ""
     fab_manager_config_database:
@@ -51,20 +53,20 @@
 
     fab_manager_env:
       # XXX webpack needs a lot of memory
-      NODE_OPTIONS: --max-old-space-size=2048
-      RAILS_ENV: production
+      NODE_OPTIONS: '"--max-old-space-size=2048"'
+      RAILS_ENV: "{{ project_rails_env }}"
       # see:
       # https://github.com/sleede/fab-manager/blob/master/doc/environment.md
       POSTGRES_HOST: "{{ fab_manager_db_host }}"
       POSTGRES_USERNAME: "{{ fab_manager_db_user }}"
-      POSTGRES_PASSWORD: "{{ fab_manager_db_password }}"
+      POSTGRES_PASSWORD: '"{{ fab_manager_db_password }}"'
       REDIS_HOST: "{{ fab_manager_redis_host }}"
       ELASTICSEARCH_HOST: "{{ fab_manager_es_host }}"
 
       SECRET_KEY_BASE: 83daf5e7b80d990f037407bab78dff9904aaf3c195a50f84fa8695a22287e707dfbd9524b403b1dcf116ae1d8c06844c3d7ed942564e5b46be6ae3ead93a9d30
 
-      STRIPE_API_KEY: ""
-      STRIPE_PUBLISHABLE_KEY: ""
+      STRIPE_API_KEY: '""'
+      STRIPE_PUBLISHABLE_KEY: '""'
 
       OAUTH_CLIENT_ID: github-oauth-app-id
       OAUTH_CLIENT_SECRET: github-oauth-app-secret
@@ -75,11 +77,11 @@
       DELIVERY_METHOD: smtp
       SMTP_ADDRESS: 127.0.0.1
       SMTP_PORT: 587
-      SMTP_USER_NAME: ""
-      SMTP_PASSWORD: ""
+      SMTP_USER_NAME: user
+      SMTP_PASSWORD: password
       SMTP_AUTHENTICATION: plain
       SMTP_ENABLE_STARTTLS_AUTO: "true"
-      SMTP_OPENSSL_VERIFY_MODE: ""
+      SMTP_OPENSSL_VERIFY_MODE: '""'
       SMTP_TLS: "false"
 
       RAILS_LOCALE: en
@@ -97,16 +99,16 @@
 
       TIME_ZONE: Asia/Bangkok
       WEEK_STARTING_DAY: monday
-      D3_DATE_FORMAT: "%Y/%m/%d"
+      D3_DATE_FORMAT: '"%Y/%m/%d"'
       UIB_DATE_FORMAT: "yyyy/MM/dd"
       EXCEL_DATE_FORMAT: "dd/mm/yyyy"
 
-      OPENLAB_BASE_URI: https://openprojects.fab-manager.com
+      OPENLAB_BASE_URI: '"https://openprojects.fab-manager.com"'
       OPENLAB_SSL_VERIFY: "true"
 
-      ADMINSYS_EMAIL: "{{ project_fab_manager_admin_user }}"
-      ADMIN_EMAIL: "{{ project_fab_manager_admin_user }}"
-      ADMIN_PASSWORD: "{{ project_fab_manager_admin_password }}"
+      ADMINSYS_EMAIL: '"{{ project_fab_manager_admin_user }}"'
+      ADMIN_EMAIL: '"{{ project_fab_manager_admin_user }}"'
+      ADMIN_PASSWORD: '"{{ project_fab_manager_admin_password }}"'
       LOG_LEVEL: debug
       DISK_SPACE_MB_ALERT: 100
       # 5242880 = 5 megabytes
@@ -281,9 +283,12 @@
       [include]
       files = {{ supervisor_conf_d_dir }}/*.conf
 
+      {% set _environment = fab_manager_env.items() | map('join', '=') | join(',') | regex_replace('%', '%%') %}
+      {# ' for vim syntax #}
+
       [program:app]
       user={{ fab_manager_user }}
-      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin",HOME={{ fab_manager_home }}
+      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin",HOME={{ fab_manager_home }},{{ _environment }}
       directory={{ fab_manager_repo_dir }}
       command=bundle exec rails s puma -p {{ fab_manager_http_port }} -b {{ fab_manager_http_address }}
       stderr_logfile={{ supervisor_log_dir }}/app.err.log
@@ -291,7 +296,7 @@
 
       [program:worker]
       user={{ fab_manager_user }}
-      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin",HOME={{ fab_manager_home }}
+      environment=PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin",HOME={{ fab_manager_home }},{{ _environment }}
       directory={{ fab_manager_repo_dir }}
       command=bundle exec sidekiq -C {{ fab_manager_repo_dir }}/config/sidekiq.yml
       stderr_logfile={{ supervisor_log_dir }}/worker.err.log
