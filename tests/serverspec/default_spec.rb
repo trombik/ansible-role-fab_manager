@@ -132,14 +132,13 @@ ports.each do |p|
   end
 end
 
-# XXX wait a bit before testing app server
-describe command("sleep 5 && curl -s http://127.0.0.1:5000") do
+describe command("curl -s http://127.0.0.1:5000") do
   its(:exit_status) { should eq 0 }
   its(:stderr) { should eq "" }
   its(:stdout) { should match Regexp.escape("<title>Fab-manager</title>") }
 end
 
-describe command("sleep 5 && curl -s http://127.0.0.1") do
+describe command("curl -s http://127.0.0.1") do
   its(:exit_status) { should eq 0 }
   its(:stderr) { should eq "" }
   its(:stdout) { should match Regexp.escape("<title>Fab-manager</title>") }

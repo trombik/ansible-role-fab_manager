@@ -1,9 +1,5 @@
 ---
 - hosts: localhost
-  pre_tasks:
-    - name: Create ansible group
-      ansible.builtin.group:
-        name: ansible
   roles:
     - trombik.git
     - trombik.sysctl
@@ -384,7 +380,7 @@
 
       backend servers
         option forwardfor
-        server server1 {{ fab_manager_http_address }}:{{ fab_manager_http_port }} maxconn 32 check inter 30000
+        server server1 {{ fab_manager_http_address }}:{{ fab_manager_http_port }} maxconn 32 check inter 1000
 
       frontend stats
         bind *:8404
