@@ -34,3 +34,4 @@ fab_manager_http_address: 127.0.0.1
 fab_manager_http_port: 5000
 fab_manager_http_schema: http
 fab_manager_extra_packages: []
+fab_manager_restart_handler: []

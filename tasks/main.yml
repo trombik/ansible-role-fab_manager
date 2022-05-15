@@ -56,6 +56,7 @@
     version: "{{ fab_manager_git_option['version'] | default(omit) }}"
   become: yes
   become_user: "{{ fab_manager_user }}"
+  notify: "{{ fab_manager_restart_handler }}"
 
 - name: Create .env file for development environment
   ansible.builtin.template:
@@ -65,6 +66,7 @@
     owner: "{{ fab_manager_user }}"
     group: "{{ fab_manager_group }}"
     mode: "0640"
+  notify: "{{ fab_manager_restart_handler }}"
 
 - name: Create env file for production environment
   ansible.builtin.template:
@@ -74,6 +76,7 @@
     owner: "{{ fab_manager_user }}"
     group: "{{ fab_manager_group }}"
     mode: "0640"
+  notify: "{{ fab_manager_restart_handler }}"
 
 - name: Create config/database.yml
   ansible.builtin.template:
@@ -82,12 +85,14 @@
     owner: "{{ fab_manager_user }}"
     group: "{{ fab_manager_group }}"
     mode: "0640"
+  notify: "{{ fab_manager_restart_handler }}"
 
 - name: Install gems via bundler
   community.general.bundler:
     chdir: "{{ fab_manager_repo_dir }}"
     deployment_mode: yes
     state: present
+  notify: "{{ fab_manager_restart_handler }}"
 
 - name: Create symlink to yarnpkg on Debian
   ansible.builtin.file:
@@ -111,6 +116,7 @@
     creates: "{{ fab_manager_repo_dir }}/node_modules"
   become: yes
   become_user: "{{ fab_manager_user }}"
+  notify: "{{ fab_manager_restart_handler }}"
 
 - name: Enable fab_manager_db_extensions in PostgreSQL
   community.postgresql.postgresql_ext:
@@ -148,6 +154,7 @@
     creates: "{{ fab_manager_repo_dir }}/.rails_db_migrate"
   become: yes
   become_user: "{{ fab_manager_user }}"
+  notify: "{{ fab_manager_restart_handler }}"
 
 - name: Run rails db:seed
   ansible.builtin.shell: "bundle exec rails db:seed && touch {{ fab_manager_repo_dir }}/.rails_db_seed"
