@@ -9,6 +9,12 @@ fab_manager_repo_dir: "{{ fab_manager_home }}/{{ fab_manager_repo_name }}"
 # on non-supported distributions.
 fab_manager_repo_url: https://github.com/trombik/fab-manager.git
 fab_manager_repo_version: local
+fab_manager_git_option:
+  clone: yes
+  dest: "{{ fab_manager_repo_dir }}"
+  repo: "{{ fab_manager_repo_url }}"
+  version: "{{ fab_manager_repo_version }}"
+  update: no
 fab_manager_config_dir: "{{ fab_manager_repo_dir }}/config"
 fab_manager_log_dir: "{{ fab_manager_repo_dir }}/log"
 fab_manager_env: {}

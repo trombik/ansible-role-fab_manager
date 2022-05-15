@@ -38,6 +38,7 @@ See an example at [requirements.yml](requirements.yml).
 | `fab_manager_repo_dir` | Path to directory to checkout the source | `{{ fab_manager_home }}/{{ fab_manager_repo_name }}` |
 | `fab_manager_repo_url` | `git` URL of the source | `https://github.com/trombik/fab-manager.git` |
 | `fab_manager_repo_version` | Branch name, tag, or commit to checkout the source | `local` |
+| `fab_manager_git_option` | See below | `{"clone"=>true, "dest"=>"{{ fab_manager_repo_dir }}", "repo"=>"{{ fab_manager_repo_url }}", "version"=>"{{ fab_manager_repo_version }}", "update"=>false}` |
 | `fab_manager_config_dir` | Path to `config` directory | `{{ fab_manager_repo_dir }}/config` |
 | `fab_manager_log_dir` | Path to `log` directory | `{{ fab_manager_repo_dir }}/log` |
 | `fab_manager_env` | A dict of `.env` file content | `{}` |
@@ -55,6 +56,13 @@ See an example at [requirements.yml](requirements.yml).
 | `fab_manager_http_port` | Port number for `fab-manager` to bind | `5000` |
 | `fab_manager_http_schema` | HTTP scheme of the protocol | `http` |
 | `fab_manager_extra_packages` | A list of extra packages to install | `[]` |
+
+## `fab_manager_git_option`
+
+This dict is passed to `ansible.builtin.git` `ansible` module as an argument.
+Keys are parameter names of the module.
+[ansible.builtin.git module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html)
+for details.
 
 ## FreeBSD
 
