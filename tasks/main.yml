@@ -29,13 +29,31 @@
 
 - name: Install fab_manager via git
   ansible.builtin.git:
-    accept_hostkey: yes
-    clone: yes
-    depth: 1
-    dest: "{{ fab_manager_repo_dir }}"
-    repo: "{{ fab_manager_repo_url }}"
-    version: "{{ fab_manager_repo_version }}"
-    update: no
+    accept_hostkey: "{{ fab_manager_git_option['accept_hostkey'] | default(omit) }}"
+    accept_newhostkey: "{{ fab_manager_git_option['accept_newhostkey'] | default(omit) }}"
+    archive: "{{ fab_manager_git_option['archive'] | default(omit) }}"
+    archive_prefix: "{{ fab_manager_git_option['archive_prefix'] | default(omit) }}"
+    bare: "{{ fab_manager_git_option['bare'] | default(omit) }}"
+    clone: "{{ fab_manager_git_option['clone'] | default(omit) }}"
+    depth: "{{ fab_manager_git_option['depth'] | default(omit) }}"
+    dest: "{{ fab_manager_git_option['dest'] }}"
+    executable: "{{ fab_manager_git_option['executable'] | default(omit) }}"
+    force: "{{ fab_manager_git_option['force'] | default(omit) }}"
+    gpg_whitelist: "{{ fab_manager_git_option['gpg_whitelist'] | default(omit) }}"
+    key_file: "{{ fab_manager_git_option['key_file'] | default(omit) }}"
+    recursive: "{{ fab_manager_git_option['recursive'] | default(omit) }}"
+    reference: "{{ fab_manager_git_option['reference'] | default(omit) }}"
+    refspec: "{{ fab_manager_git_option['refspec'] | default(omit) }}"
+    remote: "{{ fab_manager_git_option['remote'] | default(omit) }}"
+    repo: "{{ fab_manager_git_option['repo'] }}"
+    separate_git_dir: "{{ fab_manager_git_option['separate_git_dir'] | default(omit) }}"
+    single_branch: "{{ fab_manager_git_option['single_branch'] | default(omit) }}"
+    ssh_opts: "{{ fab_manager_git_option['ssh_opts'] | default(omit) }}"
+    track_submodules: "{{ fab_manager_git_option['track_submodules'] | default(omit) }}"
+    umask: "{{ fab_manager_git_option['umask'] | default(omit) }}"
+    update: "{{ fab_manager_git_option['update'] | default(omit) }}"
+    verify_commit: "{{ fab_manager_git_option['verify_commit'] | default(omit) }}"
+    version: "{{ fab_manager_git_option['version'] | default(omit) }}"
   become: yes
   become_user: "{{ fab_manager_user }}"
 
