@@ -65,15 +65,16 @@ Keys are parameter names of the module.
 [ansible.builtin.git module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html)
 for details.
 
-## FreeBSD
+## Debian
 
 ```yaml
 ---
 __fab_manager_packages:
-- databases/postgresql13-client
-- graphics/ImageMagick6
-- www/node14
-- www/yarn-node14
+- libpq-dev
+- postgresql-client-13
+- imagemagick
+- nodejs
+- yarnpkg
 ```
 
 ## Devuan-4
@@ -88,18 +89,15 @@ __fab_manager_packages:
 - yarnpkg
 ```
 
-## RedHat
+## FreeBSD
 
 ```yaml
 ---
 __fab_manager_packages:
-- ruby-devel
-- gcc
-- gcc-c++
-- libpq-devel
-- ImageMagick
-- nodejs
-- yarnpkg
+- databases/postgresql13-client
+- graphics/ImageMagick6
+- www/node14
+- www/yarn-node14
 ```
 
 ## OpenBSD
@@ -115,6 +113,20 @@ __fab_manager_packages:
 - gtar--
 - xz
 - ruby27-nokogiri
+```
+
+## RedHat
+
+```yaml
+---
+__fab_manager_packages:
+- ruby-devel
+- gcc
+- gcc-c++
+- libpq-devel
+- ImageMagick
+- nodejs
+- yarnpkg
 ```
 
 # Dependencies

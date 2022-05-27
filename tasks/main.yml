@@ -92,6 +92,10 @@
     chdir: "{{ fab_manager_repo_dir }}"
     deployment_mode: yes
     state: present
+  become: yes
+  become_user: "{{ fab_manager_user }}"
+  # gem needs $HOME to be set
+  become_flags: "--set-home"
   notify: "{{ fab_manager_restart_handler }}"
 
 - name: Create symlink to yarnpkg on Debian
