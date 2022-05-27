@@ -10,17 +10,17 @@ config_dir = "#{repo_dir}/config"
 env_file = "#{repo_dir}/.env"
 config_database = "#{config_dir}/database.yml"
 db_service = case os[:family]
-             when "freebsd", "devuan", "fedora"
+             when "freebsd", "devuan", "fedora", "debian"
                "postgresql"
              end
 rproxy_service = case os[:family]
-                 when "freebsd", "devuan", "fedora"
+                 when "freebsd", "devuan", "fedora", "debian"
                    "haproxy"
                  end
 supervisor_service = case os[:family]
                      when "freebsd", "fedora"
                        "supervisord"
-                     when "devuan"
+                     when "devuan", "debian"
                        "supervisor"
                      end
 supervisor_workers = %w[app worker]
@@ -93,6 +93,14 @@ describe command("cd #{repo_dir} && bundle exec gem list"), sudo: false do
   its(:stdout) { should match(/^rails\s+/) }
   its(:stderr) { should eq "" }
   its(:exit_status) { should eq 0 }
+end
+
+describe file("#{repo_dir}/vendor") do
+  it { should exist }
+  it { should be_directory }
+  it { should be_owned_by user }
+  it { should be_grouped_into group }
+  it { should be_mode 755 }
 end
 
 describe file("#{repo_dir}/node_modules") do

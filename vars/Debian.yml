@@ -1,0 +1,7 @@
+---
+__fab_manager_packages:
+  - libpq-dev
+  - postgresql-client-13
+  - imagemagick
+  - nodejs
+  - yarnpkg

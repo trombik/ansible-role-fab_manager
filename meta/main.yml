@@ -13,6 +13,9 @@ galaxy_info:
     - name: Devuan
       versions:
         - chimaera
+    - name: Debian
+      versions:
+        - bullseye
     - name: Fedora
       versions:
         - 35
