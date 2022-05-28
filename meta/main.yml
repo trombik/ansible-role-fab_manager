@@ -16,8 +16,5 @@ galaxy_info:
     - name: Debian
       versions:
         - bullseye
-    - name: Fedora
-      versions:
-        - 35
   galaxy_tags:
     - rails

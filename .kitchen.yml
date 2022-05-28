@@ -69,13 +69,15 @@ platforms:
       extra_vars:
         ansible_python_interpreter: '/usr/bin/python3'
 
-  - name: fedora-35-amd64
-    driver:
-      box: trombik/ansible-fedora-35-amd64
-      box_check_update: false
-    provisioner:
-      extra_vars:
-        ansible_python_interpreter: '/usr/bin/python3'
+# XXX drop Fedora. Fedora has ruby 3.x package only and fab-manager is still
+# on Rails 5.2.x.
+#   - name: fedora-36-amd64
+#     driver:
+#       box: trombik/ansible-fedora-36-amd64
+#       box_check_update: false
+#     provisioner:
+#       extra_vars:
+#         ansible_python_interpreter: '/usr/bin/python3'
 
 suites:
   - name: default
