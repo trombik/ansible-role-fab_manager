@@ -120,6 +120,9 @@
       # 20971520 = 20 megabytes
       MAX_CAO_SIZE: 20971520
 
+      # version v5.4.1 and later has NO_COLOR bit.
+      NO_COLOR: yes
+
     # ___________________________________postgresql
     postgresql_initial_password: password
     postgresql_debug: yes
