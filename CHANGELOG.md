@@ -1,3 +1,14 @@
+## Release 1.3.0
+
+* 4fc8d83 bugfix: disable color output
+* 08ff381 feat: introduce fab_manager_bundle_config
+* 9eca53a bugfix: ansible-lint
+* 3b73d3c update: update ansible-lint-action to latest
+* e3189cd bugfix: create bundler/config
+* d7b0751 bugfix: drop Fedora support for now
+* 87a6790 feat: support Debian
+* d3af0c7 workaround: disable forwarded_port
+
 ## Release 1.2.0
 
 * cbb6251 feat: introduce fab_manager_restart_handler
