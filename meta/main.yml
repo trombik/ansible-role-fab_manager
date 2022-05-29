@@ -9,12 +9,24 @@ galaxy_info:
   platforms:
     - name: FreeBSD
       versions:
-        - 13.0
+        # use String, instead of Integer
+        # see:
+        # https://github.com/ansible/ansible-lint/issues/2157
+        # https://github.com/python-jsonschema/jsonschema/issues/728
+        #
+        # it still complains, though.
+        #
+        # schema: 'chimaera' is not one of ['6.1', '7.1', '7.2', 'all'] (schema[meta])
+        # meta/main.yml:1  Returned errors will not include exact line numbers, but they will mention
+        # the schema name being used as a tag, like ``playbook-schema``,
+        # ``tasks-schema``.
+
+        - "13.0"
     - name: Devuan
       versions:
-        - chimaera
+        - "chimaera"
     - name: Debian
       versions:
-        - bullseye
+        - "bullseye"
   galaxy_tags:
     - rails
