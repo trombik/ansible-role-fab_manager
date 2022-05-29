@@ -24,6 +24,7 @@ supervisor_service = case os[:family]
                        "supervisor"
                      end
 supervisor_workers = %w[app worker]
+bundle_path = "vendor/bundle"
 ports = [
   80,   # reverse proxy
   5000, # the application
@@ -110,6 +111,7 @@ describe file("#{repo_dir}/.bundle/config") do
   it { should be_grouped_into group }
   it { should be_mode 644 }
   its(:content) { should match Regexp.escape("Managed by ansible") }
+  its(:content) { should match(/^BUNDLE_PATH:\s+#{bundle_path}/) }
 end
 
 describe file("#{repo_dir}/node_modules") do
