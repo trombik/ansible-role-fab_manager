@@ -87,10 +87,27 @@
     mode: "0640"
   notify: "{{ fab_manager_restart_handler }}"
 
+- name: Create .bundle directory
+  ansible.builtin.file:
+    path: "{{ fab_manager_repo_dir }}/.bundle"
+    owner: "{{ fab_manager_user }}"
+    group: "{{ fab_manager_group }}"
+    state: directory
+    mode: "0755"
+
+- name: Create .bundle/config
+  ansible.builtin.template:
+  # create bundler/config. bundler 2.x depricates --path
+  # Bundler version 2.3.10
+    src: bundle-config.j2
+    dest: "{{ fab_manager_repo_dir }}/.bundle/config"
+    owner: "{{ fab_manager_user }}"
+    group: "{{ fab_manager_group }}"
+    mode: "0644"
+
 - name: Install gems via bundler
   community.general.bundler:
     chdir: "{{ fab_manager_repo_dir }}"
-    deployment_mode: yes
     state: present
   become: yes
   become_user: "{{ fab_manager_user }}"
