@@ -103,6 +103,15 @@ describe file("#{repo_dir}/vendor") do
   it { should be_mode 755 }
 end
 
+describe file("#{repo_dir}/.bundle/config") do
+  it { should exist }
+  it { should be_file }
+  it { should be_owned_by user }
+  it { should be_grouped_into group }
+  it { should be_mode 644 }
+  its(:content) { should match Regexp.escape("Managed by ansible") }
+end
+
 describe file("#{repo_dir}/node_modules") do
   it { should exist }
   it { should be_directory }
