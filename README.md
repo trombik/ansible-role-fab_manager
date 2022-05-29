@@ -57,6 +57,7 @@ See an example at [requirements.yml](requirements.yml).
 | `fab_manager_http_schema` | HTTP scheme of the protocol | `http` |
 | `fab_manager_extra_packages` | A list of extra packages to install | `[]` |
 | `fab_manager_restart_handler` | A list of handlers to notify | `[]` |
+| `fab_manager_bundle_config` | A dict of `.bundle/config` | `{"BUNDLE_PATH"=>"vendor/bundle"}` |
 
 ## `fab_manager_git_option`
 

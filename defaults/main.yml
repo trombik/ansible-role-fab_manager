@@ -35,3 +35,5 @@ fab_manager_http_port: 5000
 fab_manager_http_schema: http
 fab_manager_extra_packages: []
 fab_manager_restart_handler: []
+fab_manager_bundle_config:
+  BUNDLE_PATH: vendor/bundle
