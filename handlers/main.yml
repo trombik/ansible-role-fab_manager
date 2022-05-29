@@ -1,6 +1,6 @@
 ---
 
 - name: Restart fab_manager
-  service:
+  ansible.builtin.service:
     name: fab_manager
     state: restarted
